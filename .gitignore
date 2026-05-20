@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.next/
+build/
+.env
+.env.local
+.env.*.local
+*.log
+artifacts/
+cache/
+typechain-types/
+coverage/
+deployments/localhost/
+deployments/hardhat/
+.DS_Store
+*.pem
+*.key
