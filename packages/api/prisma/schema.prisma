@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Operator {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  agents        Agent[]
+  auditLogs     AuditLog[]
+  approvalQueues ApprovalQueue[]
+}
+
+enum AgentStatus {
+  ACTIVE
+  SUSPENDED
+  PENDING
+}
+
+model Agent {
+  id       String @id @default(uuid())
+  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  operatorId String
+
+  agentId      String @unique // bytes32 hex string
+  name         String
+  groupName    String
+  vaultAddress String?
+  status       AgentStatus @default(PENDING)
+
+  // Spend policy (stored in USDC cents for DB — sync to chain on update)
+  policyPerOrder   BigInt @default(0)
+  policyDaily      BigInt @default(0)
+  policyLifetime   BigInt @default(0)
+
+  totalSpent BigInt @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cards          Card[]
+  approvalQueues ApprovalQueue[]
+  auditLogs      AuditLog[]
+}
+
+model Card {
+  id            String   @id @default(uuid())
+  agent         Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  agentId       String
+
+  usdcAmount    BigInt
+  attestationId String   @unique
+  cardHash      String   // keccak256(pan+expiry) — never store raw PAN
+  issuedAt      DateTime @default(now())
+  revokedAt     DateTime?
+
+  txHash        String?
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model ApprovalQueue {
+  id           String         @id @default(uuid())
+  agent        Agent          @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  agentId      String
+  operator     Operator       @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  operatorId   String
+
+  usdcAmount   BigInt
+  merchantHint String?
+  status       ApprovalStatus @default(PENDING)
+  webhookUrl   String?
+
+  requestedAt  DateTime @default(now())
+  resolvedAt   DateTime?
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  operatorId String
+  agent      Agent?   @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  agentId    String?
+
+  action     String
+  metadata   Json     @default("{}")
+  ip         String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+}
