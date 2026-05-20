@@ -1,0 +1,36 @@
+type AttestationEvent @entity {
+  id: ID!
+  agentId: Bytes!
+  usdcAmount: BigInt!
+  cardHash: Bytes!
+  timestamp: BigInt!
+  revoked: Boolean!
+  revokedAt: BigInt
+  txHash: Bytes!
+}
+
+type AgentVaultEvent @entity {
+  id: ID!
+  agentId: Bytes!
+  eventType: String!   # "DEPOSIT" | "WITHDRAW" | "POLICY_UPDATE"
+  amount: BigInt
+  toAddress: Bytes
+  timestamp: BigInt!
+  txHash: Bytes!
+  blockNumber: BigInt!
+}
+
+type OperatorStats @entity {
+  id: ID!              # operator address (lowercase)
+  totalAgents: Int!
+  totalCardsIssued: Int!
+  totalUsdcSettled: BigInt!
+  lastActivity: BigInt!
+}
+
+type AgentRegistry @entity {
+  id: ID!              # agentId
+  vaultAddress: Bytes!
+  operator: Bytes!
+  registeredAt: BigInt!
+}

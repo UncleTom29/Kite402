@@ -1,0 +1,15 @@
+{
+  "name": "@kite402/subgraph",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy:testnet": "goldsky subgraph deploy kite402/v1 --path . --network kite-ai-testnet",
+    "deploy:mainnet": "goldsky subgraph deploy kite402/v1-mainnet --path . --network kite-ai"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.72.0",
+    "@graphprotocol/graph-ts": "^0.34.0"
+  }
+}
