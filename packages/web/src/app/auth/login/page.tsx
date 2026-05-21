@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,6 +11,15 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [showSessionExpiredMessage, setShowSessionExpiredMessage] = useState(false);
+
+  useEffect(() => {
+    const reason = new URLSearchParams(window.location.search).get('reason');
+    const fromStorage = sessionStorage.getItem('kite402:authMessage') === 'session-expired';
+    const show = reason === 'session_expired' || fromStorage;
+    setShowSessionExpiredMessage(show);
+    if (show) sessionStorage.removeItem('kite402:authMessage');
+  }, []);
 
   const loginMutation = trpc.auth.login.useMutation({
     onSuccess: (data: { token: string }) => {
@@ -36,6 +45,12 @@ export default function LoginPage() {
           }}
           className="card space-y-4"
         >
+          {showSessionExpiredMessage && (
+            <p className="text-amber-300 text-xs border border-amber-500/30 bg-amber-500/10 px-3 py-2 rounded">
+              Your session expired. Please sign in again.
+            </p>
+          )}
+
           <div>
             <label className="block text-xs text-kite-muted mb-1.5">Email</label>
             <input
