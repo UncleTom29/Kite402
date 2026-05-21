@@ -4,6 +4,15 @@
 
 Kite402 gives autonomous AI agents their own on-chain wallets (via Account Abstraction) and issues them real virtual Visa cards on demand — enforcing granular spend policies at the smart-contract level, attesting every issuance on Kite chain, and providing operators a Bloomberg-style fleet dashboard.
 
+## Latest Updates
+
+- Added a dedicated Audit Log view in the dashboard UI and wired it to the real `audit.list` tRPC endpoint.
+- Introduced clean operator URLs (no dashboard prefix required): `/fleet`, `/approvals`, `/governance`, `/audit`, `/agents/new`, `/agents/:agentId`.
+- Replaced placeholder frontend branding badges with the real Kite402 logo asset.
+- Added signed Passport webhook intake route at `POST /passport/webhook` in the API.
+- Added LayerZero bridge sender deployments for Ethereum Sepolia and Base Sepolia, with deployment scripts and env wiring updates.
+- Stabilized local frontend runtime by adding PostCSS/Tailwind discovery config and separate Next.js dist dirs for dev/prod.
+
 ---
 
 ## What It Does
@@ -127,7 +136,7 @@ kite402/
 ```bash
 # Prerequisites: Node 20+, pnpm 9+, Docker
 
-git clone https://github.com/your-org/kite402
+git clone https://github.com/uncletom29/kite402
 cd kite402
 cp .env.example .env          # fill in required values
 pnpm install
@@ -144,6 +153,14 @@ pnpm --filter @kite402/contracts build
 # Start API + Dashboard
 pnpm dev
 ```
+
+### Dashboard Routes
+
+- Fleet: `http://localhost:3000/fleet`
+- Approvals: `http://localhost:3000/approvals`
+- Governance: `http://localhost:3000/governance`
+- Audit: `http://localhost:3000/audit`
+- New Agent: `http://localhost:3000/agents/new`
 
 ---
 
