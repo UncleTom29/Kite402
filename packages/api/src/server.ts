@@ -1,8 +1,10 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+import * as path from 'path';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
+import { signWebhookPayload } from '@kite402/sdk';
 import { appRouter } from './router';
 import { createContext } from './lib/trpc';
 import { authMiddleware } from './middleware/auth';
@@ -11,7 +13,9 @@ import { passportAuthMiddleware } from './middleware/passportAuth';
 import { prisma } from './lib/prisma';
 import { redis } from './lib/redis';
 
-const app = express();
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+
+const app: express.Express = express();
 
 // Security
 app.use(helmet());
@@ -26,6 +30,24 @@ app.use(express.json({ limit: '1mb' }));
 // Health check (unauthenticated)
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: Date.now() });
+});
+
+app.post('/passport/webhook', (req, res) => {
+  const body = req.body ?? {};
+  const rawBody = JSON.stringify(body);
+  const expectedSignature = process.env.WEBHOOK_SECRET
+    ? `sha256=${signWebhookPayload(rawBody, process.env.WEBHOOK_SECRET)}`
+    : '';
+  const signature = req.header('x-kite402-signature');
+
+  if (expectedSignature && signature && signature !== expectedSignature) {
+    return res.status(401).json({ ok: false, error: 'invalid signature' });
+  }
+
+  const eventType = body.type ?? body.eventType ?? body.event ?? 'unknown';
+  console.log('[passport:webhook]', eventType, body);
+
+  return res.json({ ok: true, received: true, eventType });
 });
 
 // Auth on all tRPC routes except auth.*

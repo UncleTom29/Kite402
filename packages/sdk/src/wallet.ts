@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import type { KiteConfig, SpendPolicy, CardResult, VaultDeployResult } from './types';
-import { validatePolicy, AGENT_VAULT_ABI } from './policy';
+import { validatePolicy } from './policy';
 import { GaslessTransfer } from './gasless';
 
 // Minimal ABI fragments needed by the wallet module
@@ -15,10 +15,6 @@ const ERC20_ABI = [
 const REGISTRY_ABI = [
   'function registerAgent(bytes32 agentId, address vaultAddress, address operator)',
   'function getAgentVault(bytes32 agentId) view returns (address)',
-];
-
-const ERC1967_PROXY_ABI = [
-  'constructor(address implementation, bytes data)',
 ];
 
 /**

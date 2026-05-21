@@ -3,13 +3,6 @@ import type { GaslessToken, GaslessTransferResult } from './types';
 
 const DEFAULT_GASLESS_ENDPOINT = 'https://gasless.gokite.ai';
 
-// EIP-3009 TransferWithAuthorization type hash
-const TRANSFER_WITH_AUTHORIZATION_TYPEHASH = ethers.keccak256(
-  ethers.toUtf8Bytes(
-    'TransferWithAuthorization(address from,address to,uint256 value,uint256 validAfter,uint256 validBefore,bytes32 nonce)',
-  ),
-);
-
 export interface GaslessTransferParams {
   from: string;
   to: string;

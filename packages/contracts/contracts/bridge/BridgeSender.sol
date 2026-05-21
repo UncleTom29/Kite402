@@ -13,7 +13,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
  * @notice Deployed on Ethereum/Base/Avalanche. Accepts USDC and forwards it to Kite chain
  *         via LayerZero V2. Recipient funds the target AgentVault.
  */
-contract BridgeSender is OAppSender, Ownable {
+contract BridgeSender is OAppSender {
     using SafeERC20 for IERC20;
     using OptionsBuilder for bytes;
 

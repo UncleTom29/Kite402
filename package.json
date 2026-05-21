@@ -7,11 +7,21 @@
     "build": "pnpm -r run build",
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
-    "dev": "pnpm --filter @kite402/api dev & pnpm --filter @kite402/web dev",
-    "docker:up": "docker compose up -d",
+    "dev": "pnpm run dev:free-ports && pnpm run dev:infra && pnpm run dev:services",
+    "dev:free-ports": "sh -c 'for port in 3000 4000; do pids=$(lsof -t -iTCP:$port -sTCP:LISTEN 2>/dev/null || true); if [ -n \"$pids\" ]; then kill $pids; fi; done; pkill -f \"ts-node-dev\" 2>/dev/null || true; pkill -f \"tsx watch src/server.ts\" 2>/dev/null || true; pkill -f \"next dev -p 3000\" 2>/dev/null || true; pkill -f \"tsup src/index.ts --format cjs,esm --watch\" 2>/dev/null || true'",
+    "dev:stop": "./scripts/dev-stop.sh",
+    "stop": "pnpm run dev:stop",
+    "dev:infra": "pnpm docker:up && pnpm --filter @kite402/api db:generate && pnpm --filter @kite402/api db:migrate",
+    "dev:services": "pnpm --filter @kite402/sdk build && pnpm --parallel --stream --filter @kite402/sdk --filter @kite402/api --filter @kite402/web run dev",
+    "docker:up": "docker compose up -d postgres redis",
     "docker:down": "docker compose down",
     "contracts:deploy:testnet": "pnpm --filter @kite402/contracts run deploy:testnet",
     "contracts:deploy:mainnet": "pnpm --filter @kite402/contracts run deploy:mainnet",
+    "contracts:deploy:bridge:ethSepolia": "pnpm --filter @kite402/contracts run deploy:bridge:ethSepolia",
+    "contracts:deploy:bridge:baseSepolia": "pnpm --filter @kite402/contracts run deploy:bridge:baseSepolia",
+    "contracts:verify:testnet": "pnpm --filter @kite402/contracts run verify:testnet",
+    "contracts:verify:mainnet": "pnpm --filter @kite402/contracts run verify",
+    "contracts:verify:all": "node ./scripts/verify-all.mjs",
     "contracts:test": "pnpm --filter @kite402/contracts run test"
   },
   "devDependencies": {
@@ -20,7 +30,8 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "yaml": "^2.8.1"
   },
   "engines": {
     "node": ">=20.0.0",

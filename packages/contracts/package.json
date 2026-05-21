@@ -8,6 +8,9 @@
     "test:coverage": "hardhat coverage",
     "deploy:testnet": "hardhat run scripts/deploy.ts --network kiteTestnet",
     "deploy:mainnet": "hardhat run scripts/deploy.ts --network kiteMainnet",
+    "deploy:bridge:ethSepolia": "hardhat run scripts/deploy-bridge.ts --network ethSepolia",
+    "deploy:bridge:baseSepolia": "hardhat run scripts/deploy-bridge.ts --network baseSepolia",
+    "verify:testnet": "hardhat run scripts/verify.ts --network kiteTestnet",
     "verify": "hardhat run scripts/verify.ts --network kiteMainnet",
     "clean": "hardhat clean"
   },
@@ -32,5 +35,12 @@
     "ts-node": "^10.9.0",
     "typechain": "^8.3.0",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@layerzerolabs/lz-evm-messagelib-v2": "^3.0.168",
+    "@layerzerolabs/lz-evm-oapp-v2": "^3.0.168",
+    "@layerzerolabs/lz-evm-protocol-v2": "^3.0.168",
+    "@layerzerolabs/lz-evm-v1-0.7": "^3.0.168",
+    "solidity-bytes-utils": "^0.8.4"
   }
 }

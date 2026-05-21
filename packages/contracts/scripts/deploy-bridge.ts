@@ -10,6 +10,9 @@
  *
  *   Deploy BridgeSender on Ethereum Sepolia (needs separate network config):
  *     hardhat run scripts/deploy-bridge.ts --network ethSepolia
+ *
+ *   Deploy BridgeSender on Base Sepolia:
+ *     hardhat run scripts/deploy-bridge.ts --network baseSepolia
  */
 
 import { ethers } from 'hardhat';
@@ -19,8 +22,13 @@ import * as path from 'path';
 // LayerZero V2 endpoint addresses
 const LZ_ENDPOINTS: Record<number, string> = {
   2368: process.env.LZ_ENDPOINT_KITE_TESTNET ?? '0x6EDCE65403992e310A62460808c4b910D972f10f',
-  40161: process.env.LZ_ENDPOINT_ETHEREUM_SEPOLIA ?? '0x6EDCE65403992e310A62460808c4b910D972f10f',
-  40245: process.env.LZ_ENDPOINT_BASE_SEPOLIA ?? '0x6EDCE65403992e310A62460808c4b910D972f10f',
+  11155111: process.env.LZ_ENDPOINT_ETHEREUM_SEPOLIA ?? '0x6EDCE65403992e310A62460808c4b910D972f10f',
+  84532: process.env.LZ_ENDPOINT_BASE_SEPOLIA ?? '0x6EDCE65403992e310A62460808c4b910D972f10f',
+};
+
+const SOURCE_USDC_TOKENS: Record<number, string> = {
+  11155111: process.env.SOURCE_USDC_ETHEREUM_SEPOLIA ?? '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+  84532: process.env.SOURCE_USDC_BASE_SEPOLIA ?? '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
 };
 
 const KITE_EID = 40999; // Kite Testnet EID — confirm from https://docs.layerzero.network/v2/deployments/deployed-contracts
@@ -35,8 +43,14 @@ async function main() {
   const endpoint = LZ_ENDPOINTS[chainId];
   if (!endpoint) throw new Error(`No LZ endpoint for chainId ${chainId}`);
 
-  const usdcAddress = process.env.KITE_SETTLEMENT_TOKEN
-    ?? (chainId === 2368 ? '0x0fF5393387ad2f9f691FD6Fd28e07E3969e27e63' : '0xUSDC_ON_SOURCE_CHAIN');
+  const usdcAddress =
+    chainId === 2368
+      ? process.env.KITE_SETTLEMENT_TOKEN ?? '0x0fF5393387ad2f9f691FD6Fd28e07E3969e27e63'
+      : SOURCE_USDC_TOKENS[chainId];
+
+  if (!usdcAddress) {
+    throw new Error(`No source-chain USDC address configured for chainId ${chainId}`);
+  }
 
   if (chainId === 2368) {
     // Deploy BridgeReceiver on Kite chain

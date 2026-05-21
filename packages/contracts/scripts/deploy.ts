@@ -21,9 +21,7 @@ async function main() {
 
   // 2. Deploy AgentVault implementation (UUPS — proxy deployed per agent)
   console.log('2/5 Deploying AgentVault implementation...');
-  const AgentVault = await ethers.getContractFactory('AgentVault', {
-    libraries: { SpendPolicyLib: libAddress },
-  });
+  const AgentVault = await ethers.getContractFactory('AgentVault');
   const agentVaultImpl = await AgentVault.deploy();
   await agentVaultImpl.waitForDeployment();
   const vaultImplAddress = await agentVaultImpl.getAddress();

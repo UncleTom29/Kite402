@@ -1,0 +1,13 @@
+{
+  "network": "kiteTestnet",
+  "chainId": "2368",
+  "deployer": "0x9f2EdCE3a34e42eaf8f965d4E14aDDd12Cf865f4",
+  "timestamp": "2026-05-20T22:44:31.594Z",
+  "contracts": {
+    "SpendPolicyLib": "0x461D7501ae9493b4678C60F97A903fc51069152A",
+    "AgentVaultImplementation": "0x71Fb66498976B7e09fB9FC176Fb1fb53959a4A54",
+    "KiteCardAttestation": "0x21ab93a1494b1B0E3eafdB24E3703F12F8AfeC20",
+    "Kite402Registry": "0x7B2151392F8428Cf6EA48B6603c1BD6605B02Dbd",
+    "MultiSigOperator": "0x216760e96222bCe5DC454a3353364FaD8C088999"
+  }
+}

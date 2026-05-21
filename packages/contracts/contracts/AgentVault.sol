@@ -3,12 +3,11 @@ pragma solidity ^0.8.24;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {SpendPolicyLib} from "./SpendPolicyLib.sol";
 
-contract AgentVault is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract AgentVault is UUPSUpgradeable, OwnableUpgradeable {
     using SafeERC20 for IERC20;
     using SpendPolicyLib for SpendPolicyLib.SpendPolicy;
 
@@ -19,6 +18,9 @@ contract AgentVault is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgra
     bytes32 public agentId;
     IERC20 public settlementToken;
     SpendPolicyLib.SpendPolicy public spendPolicy;
+
+    // Reentrancy state for proxy-safe guard (1 = not entered, 2 = entered)
+    uint256 private _reentrancyStatus;
 
     // approved operators in addition to owner (e.g. multisig)
     mapping(address => bool) public approvedOperators;
@@ -42,6 +44,7 @@ contract AgentVault is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgra
     error Unauthorized();
     error InsufficientBalance(uint256 available, uint256 requested);
     error InvalidPolicy();
+    error ReentrantCall();
 
     // -------------------------------------------------------------------------
     // Modifiers
@@ -50,6 +53,13 @@ contract AgentVault is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgra
     modifier onlyAuthorized() {
         if (msg.sender != owner() && !approvedOperators[msg.sender]) revert Unauthorized();
         _;
+    }
+
+    modifier nonReentrant() {
+        if (_reentrancyStatus == 2) revert ReentrantCall();
+        _reentrancyStatus = 2;
+        _;
+        _reentrancyStatus = 1;
     }
 
     // -------------------------------------------------------------------------
@@ -68,8 +78,7 @@ contract AgentVault is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgra
         SpendPolicyLib.SpendPolicy calldata _policy
     ) external initializer {
         __Ownable_init(_owner);
-        __UUPSUpgradeable_init();
-        __ReentrancyGuard_init();
+        _reentrancyStatus = 1;
 
         agentId = _agentId;
         settlementToken = IERC20(_settlementToken);
@@ -92,8 +101,8 @@ contract AgentVault is UUPSUpgradeable, OwnableUpgradeable, ReentrancyGuardUpgra
     function withdraw(address to, uint256 amount) external onlyAuthorized nonReentrant {
         spendPolicy.enforce(amount);
 
-        uint256 balance = settlementToken.balanceOf(address(this));
-        if (balance < amount) revert InsufficientBalance(balance, amount);
+        uint256 currentBalance = settlementToken.balanceOf(address(this));
+        if (currentBalance < amount) revert InsufficientBalance(currentBalance, amount);
 
         spendPolicy.record(amount);
         settlementToken.safeTransfer(to, amount);

@@ -12,7 +12,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
  * @notice Deployed on Kite chain. Receives cross-chain USDC.e from Ethereum/Base/Avalanche
  *         via LayerZero V2 and credits the target AgentVault.
  */
-contract BridgeReceiver is OAppReceiver, Ownable {
+contract BridgeReceiver is OAppReceiver {
     using SafeERC20 for IERC20;
 
     IERC20 public immutable usdcToken;

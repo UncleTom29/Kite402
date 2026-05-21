@@ -1,4 +1,3 @@
-import { ethers } from 'ethers';
 import type { PassportServiceConfig, PassportSession } from './types';
 
 /**

@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "ignoreDeprecations": "5.0"
   },
   "include": ["hardhat.config.ts", "scripts/**/*.ts", "test/**/*.ts", "typechain-types/**/*.ts"]
 }
