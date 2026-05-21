@@ -8,7 +8,7 @@ import { CopyButton } from '../../../../components/ui/CopyButton';
 import { Skeleton } from '../../../../components/ui/Skeleton';
 import { SpendingChart } from '../../../../components/charts/SpendingChart';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function AgentDetailPage({ params }: { params: { agentId: string } }) {
@@ -31,7 +31,7 @@ export default function AgentDetailPage({ params }: { params: { agentId: string 
     return (
       <div className="p-6">
         <p className="text-kite-muted">Agent not found.</p>
-        <Link href="/dashboard" className="text-kite-blue hover:underline text-sm mt-2 block">
+        <Link href="/fleet" className="text-kite-blue hover:underline text-sm mt-2 block">
           ← Back to fleet
         </Link>
       </div>
@@ -43,7 +43,7 @@ export default function AgentDetailPage({ params }: { params: { agentId: string 
       {/* Header */}
       <div>
         <Link
-          href="/dashboard"
+          href="/fleet"
           className="flex items-center gap-1.5 text-kite-muted hover:text-slate-200 text-xs mb-4 transition-colors w-fit"
         >
           <ArrowLeft size={12} />
@@ -108,7 +108,7 @@ export default function AgentDetailPage({ params }: { params: { agentId: string 
             ))}
           </div>
           <Link
-            href={`/dashboard/agents/${params.agentId}/policy`}
+            href={`/agents/${params.agentId}/policy`}
             className="text-kite-blue text-xs mt-3 block hover:underline"
           >
             Edit policy →

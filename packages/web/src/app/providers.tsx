@@ -5,9 +5,9 @@ import { httpBatchLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import superjson from 'superjson';
 import { useState } from 'react';
-import type { AppRouter } from '@kite402/api/src/router';
 
-export const trpc = createTRPCReact<AppRouter>();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const trpc: any = createTRPCReact<any>();
 
 function getToken(): string {
   if (typeof window === 'undefined') return '';

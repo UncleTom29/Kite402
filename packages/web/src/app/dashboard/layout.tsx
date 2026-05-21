@@ -1,12 +1,13 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { LayoutDashboard, Users, Bell, FileText, Shield } from 'lucide-react';
 
 const navItems = [
-  { href: '/dashboard', label: 'Fleet', icon: LayoutDashboard },
-  { href: '/dashboard/approvals', label: 'Approvals', icon: Bell },
-  { href: '/dashboard/agents/new', label: 'New Agent', icon: Users },
-  { href: '/dashboard/governance', label: 'Governance', icon: Shield },
-  { href: '/dashboard/audit', label: 'Audit Log', icon: FileText },
+  { href: '/fleet', label: 'Fleet', icon: LayoutDashboard },
+  { href: '/approvals', label: 'Approvals', icon: Bell },
+  { href: '/agents/new', label: 'New Agent', icon: Users },
+  { href: '/governance', label: 'Governance', icon: Shield },
+  { href: '/audit', label: 'Audit Log', icon: FileText },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -16,9 +17,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className="w-56 border-r border-kite-border bg-kite-surface flex flex-col">
         <div className="p-4 border-b border-kite-border">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-kite-blue rounded-md flex items-center justify-center">
-              <span className="text-white text-xs font-bold">K</span>
-            </div>
+            <Image src="/kite402_logo.svg" alt="Kite402" width={28} height={28} className="w-7 h-7" priority />
             <span className="font-semibold text-sm tracking-wide">Kite402</span>
           </div>
           <p className="text-kite-muted text-[10px] mt-1 tracking-widest uppercase">

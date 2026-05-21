@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { trpc } from '../../providers';
 
 export default function LoginPage() {
@@ -12,20 +13,18 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
 
   const loginMutation = trpc.auth.login.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data: { token: string }) => {
       localStorage.setItem('kite402:token', data.token);
-      router.push('/dashboard');
+      router.push('/fleet');
     },
-    onError: (err) => setError(err.message),
+    onError: (err: { message: string }) => setError(err.message),
   });
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-kite-bg">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-10 h-10 bg-kite-blue rounded-xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-lg">K</span>
-          </div>
+          <Image src="/kite402_logo.svg" alt="Kite402" width={40} height={40} className="mx-auto mb-4" priority />
           <h1 className="text-2xl font-semibold">Kite402</h1>
           <p className="text-kite-muted text-sm mt-1">Operator Dashboard</p>
         </div>

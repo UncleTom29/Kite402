@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .next/
+.next-dev/
 build/
 .env
 .env.local
@@ -15,3 +16,5 @@ deployments/hardhat/
 .DS_Store
 *.pem
 *.key
+
+.kite-passport/

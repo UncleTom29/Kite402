@@ -1,0 +1,26 @@
+<svg width="100%" viewBox="0 0 680 480" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Kite402 logo</title>
+  <desc>A geometric kite diamond shape with a credit card stripe, the wordmark Kite402, and tagline below.</desc>
+
+  <polygon points="340,60 460,200 340,340 220,200" fill="#0066FF" />
+  <polygon points="340,110 420,200 340,290 260,200" fill="#3388FF" opacity="0.5" />
+
+  <clipPath id="diamondClip">
+    <polygon points="340,60 460,200 340,340 220,200" />
+  </clipPath>
+
+  <rect x="200" y="182" width="280" height="36" fill="#001133" opacity="0.55" clip-path="url(#diamondClip)" />
+  <rect x="260" y="189" width="34" height="22" rx="4" fill="#FFD700" opacity="0.9" clip-path="url(#diamondClip)" />
+  <line x1="277" y1="189" x2="277" y2="211" stroke="#CDA600" stroke-width="1" clip-path="url(#diamondClip)" />
+  <line x1="260" y1="200" x2="294" y2="200" stroke="#CDA600" stroke-width="1" clip-path="url(#diamondClip)" />
+  <rect x="200" y="215" width="280" height="5" fill="#FFFFFF" opacity="0.12" clip-path="url(#diamondClip)" />
+
+  <line x1="340" y1="340" x2="340" y2="418" stroke="#0066FF" stroke-width="4" stroke-linecap="round" opacity="0.45" />
+  <line x1="302" y1="372" x2="378" y2="372" stroke="#0066FF" stroke-width="3" stroke-linecap="round" opacity="0.3" />
+  <line x1="315" y1="400" x2="365" y2="400" stroke="#0066FF" stroke-width="3" stroke-linecap="round" opacity="0.2" />
+
+  <text x="340" y="458" text-anchor="middle" fill="#0A0A0F" font-family="'JetBrains Mono', 'Segoe UI', sans-serif" font-size="56" font-weight="500">
+    Kite
+    <tspan fill="#0066FF">402</tspan>
+  </text>
+</svg>

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { trpc } from '../../providers';
 import { Skeleton } from '../../../components/ui/Skeleton';
-import { KiteScanLink } from '../../../components/ui/KiteScanLink';
 import { Shield, Clock, CheckCircle, XCircle, PlayCircle } from 'lucide-react';
 
 export default function GovernancePage() {

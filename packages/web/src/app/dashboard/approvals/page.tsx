@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-import useSWR from 'swr';
 import { trpc } from '../../providers';
 import { USDCAmount } from '../../../components/ui/USDCAmount';
 import { Skeleton } from '../../../components/ui/Skeleton';

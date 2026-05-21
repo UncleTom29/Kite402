@@ -74,7 +74,7 @@ export default function NewAgentPage() {
             {vaultAddress}
           </code>
           <div className="flex gap-2 justify-center">
-            <button onClick={() => router.push('/dashboard')} className="btn-primary">
+            <button onClick={() => router.push('/fleet')} className="btn-primary">
               View Fleet →
             </button>
             <button

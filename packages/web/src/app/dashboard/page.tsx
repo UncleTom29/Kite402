@@ -3,7 +3,6 @@
 import { trpc } from '../providers';
 import { StatusChip } from '../../components/ui/StatusChip';
 import { USDCAmount } from '../../components/ui/USDCAmount';
-import { KiteScanLink } from '../../components/ui/KiteScanLink';
 import { CopyButton } from '../../components/ui/CopyButton';
 import { SkeletonTable, Skeleton } from '../../components/ui/Skeleton';
 import Link from 'next/link';
@@ -38,7 +37,7 @@ export default function FleetOverviewPage() {
             <RefreshCw size={13} />
             Refresh
           </button>
-          <Link href="/dashboard/agents/new" className="btn-primary flex items-center gap-1.5">
+          <Link href="/agents/new" className="btn-primary flex items-center gap-1.5">
             <Plus size={13} />
             New Agent
           </Link>
@@ -93,7 +92,7 @@ export default function FleetOverviewPage() {
                     <td className="px-4 py-3">
                       <div>
                         <Link
-                          href={`/dashboard/agents/${agent.id}`}
+                          href={`/agents/${agent.id}`}
                           className="text-slate-100 hover:text-kite-blue transition-colors font-medium"
                         >
                           {agent.name}
@@ -143,7 +142,7 @@ export default function FleetOverviewPage() {
                           </button>
                         ) : null}
                         <Link
-                          href={`/dashboard/agents/${agent.id}`}
+                          href={`/agents/${agent.id}`}
                           className="text-xs text-kite-blue hover:text-blue-400 transition-colors"
                         >
                           Detail →
@@ -156,7 +155,7 @@ export default function FleetOverviewPage() {
                   <tr>
                     <td colSpan={7} className="px-4 py-12 text-center text-kite-muted">
                       No agents yet.{' '}
-                      <Link href="/dashboard/agents/new" className="text-kite-blue hover:underline">
+                      <Link href="/agents/new" className="text-kite-blue hover:underline">
                         Create your first agent →
                       </Link>
                     </td>
