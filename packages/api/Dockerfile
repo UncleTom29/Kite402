@@ -23,6 +23,7 @@ RUN pnpm --filter @kite402/api build
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+ENV NODE_PATH=/app/packages/api/node_modules:/app/node_modules
 RUN apk add --no-cache openssl
 
 COPY --from=builder /app/packages/api/dist ./dist
