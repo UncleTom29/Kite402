@@ -9,8 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@kite402/api": "workspace:*",
-    "@kite402/sdk": "workspace:*",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.2",
     "@trpc/react-query": "^10.45.2",
