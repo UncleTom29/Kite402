@@ -2,9 +2,6 @@
   "buildCommand": "pnpm build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "env": {
-    "NEXT_PUBLIC_API_URL": "@kite402_api_url"
-  },
   "headers": [
     {
       "source": "/(.*)",
