@@ -26,7 +26,7 @@ export function SpendingChart({ agentId }: SpendingChartProps) {
 
   useEffect(() => {
     // Fetch from Goldsky subgraph via API
-    const apiBase = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+    const apiBase = process.env.NEXT_PUBLIC_API_URL?.trim() || '';
     fetch(`${apiBase}/api/spend-chart/${agentId}`)
       .then((r) => r.json())
       .then((d: SpendDataPoint[]) => setData(d))

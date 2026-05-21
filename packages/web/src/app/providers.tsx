@@ -14,6 +14,10 @@ function getToken(): string {
   return localStorage.getItem('kite402:token') ?? '';
 }
 
+function getApiBase(): string {
+  return process.env.NEXT_PUBLIC_API_URL?.trim() || '';
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: { queries: { staleTime: 30_000, retry: 1 } },
@@ -24,7 +28,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       transformer: superjson,
       links: [
         httpBatchLink({
-          url: `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'}/trpc`,
+          url: `${getApiBase()}/trpc`,
           headers() {
             const token = getToken();
             return token ? { Authorization: `Bearer ${token}` } : {};
