@@ -2,6 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import type { CreateExpressContextOptions } from '@trpc/server/adapters/express';
 import type { JwtPayload } from '../middleware/auth';
+import jwt from 'jsonwebtoken';
 
 export interface Context {
   operatorId: string | null;
@@ -10,8 +11,22 @@ export interface Context {
   userAgent: string;
 }
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
+function parseOperator(req: CreateExpressContextOptions['req']): JwtPayload | null {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ') || !JWT_SECRET) return null;
+
+  const token = authHeader.slice(7);
+  try {
+    return jwt.verify(token, JWT_SECRET) as JwtPayload;
+  } catch {
+    return null;
+  }
+}
+
 export function createContext({ req }: CreateExpressContextOptions): Context {
-  const payload = (req as typeof req & { operator?: JwtPayload }).operator;
+  const payload = parseOperator(req);
   return {
     operatorId: payload?.sub ?? null,
     operatorEmail: payload?.email ?? null,

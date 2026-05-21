@@ -7,7 +7,6 @@ import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { signWebhookPayload } from '@kite402/sdk';
 import { appRouter } from './router';
 import { createContext } from './lib/trpc';
-import { authMiddleware } from './middleware/auth';
 import { rateLimitMiddleware } from './middleware/rateLimit';
 import { passportAuthMiddleware } from './middleware/passportAuth';
 import { prisma } from './lib/prisma';
@@ -48,13 +47,6 @@ app.post('/passport/webhook', (req, res) => {
   console.log('[passport:webhook]', eventType, body);
 
   return res.json({ ok: true, received: true, eventType });
-});
-
-// Auth on all tRPC routes except auth.*
-app.use('/trpc', (req, res, next) => {
-  const path = req.path.replace('/', '');
-  if (path.startsWith('auth.')) return next();
-  return authMiddleware(req, res, next);
 });
 
 // Passport session validation (for agent-initiated requests)
