@@ -7,6 +7,14 @@ const nextConfig = {
   },
   async rewrites() {
     return [
+      {
+        source: '/trpc/:path*',
+        destination: 'http://ec2-52-90-244-171.compute-1.amazonaws.com:4000/trpc/:path*',
+      },
+      {
+        source: '/api/spend-chart/:agentId',
+        destination: 'http://ec2-52-90-244-171.compute-1.amazonaws.com:4000/api/spend-chart/:agentId',
+      },
       { source: '/fleet', destination: '/dashboard' },
       { source: '/approvals', destination: '/dashboard/approvals' },
       { source: '/governance', destination: '/dashboard/governance' },
