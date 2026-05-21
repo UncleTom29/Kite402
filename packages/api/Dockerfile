@@ -1,5 +1,6 @@
 FROM node:20-alpine AS base
 WORKDIR /app
+RUN apk add --no-cache openssl
 RUN npm install -g pnpm
 
 # --- deps stage ---
@@ -22,6 +23,7 @@ RUN pnpm --filter @kite402/api build
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+RUN apk add --no-cache openssl
 
 COPY --from=builder /app/packages/api/dist ./dist
 COPY --from=builder /app/packages/api/prisma ./prisma
