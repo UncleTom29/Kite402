@@ -34,4 +34,4 @@ COPY --from=builder /app/packages/api/node_modules ./packages/api/node_modules
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "./packages/api/node_modules/.bin/prisma migrate deploy && node dist/server.js"]
+CMD ["sh", "-c", "./packages/api/node_modules/.bin/prisma db push && node dist/server.js"]
