@@ -15,8 +15,8 @@ COPY packages/sdk ./packages/sdk
 COPY packages/api ./packages/api
 COPY tsconfig.base.json ./
 RUN pnpm --filter @kite402/sdk build
-RUN pnpm --filter @kite402/api build
 RUN pnpm --filter @kite402/api exec prisma generate
+RUN pnpm --filter @kite402/api build
 
 # --- runner stage ---
 FROM node:20-alpine AS runner
